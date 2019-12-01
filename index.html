@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="data/RencanaPenggunaanLahan_1.js"></script>
+        <script src="data/BatasDesa_2.js"></script>
+        <script src="data/WilayahStudi_3.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:3
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+        }
+        var layer_GoogleHybird_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 3,
+            maxZoom: 28,
+            minNativeZoom: 2,
+            maxNativeZoom: 25
+        });
+        layer_GoogleHybird_0;
+        map.addLayer(layer_GoogleHybird_0);
+        function pop_RencanaPenggunaanLahan_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>DESA</strong><br />' + (feature.properties['DESA'] !== null ? Autolinker.link(feature.properties['DESA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">EXISTING</th>\
+                        <td>' + (feature.properties['EXISTING'] !== null ? Autolinker.link(feature.properties['EXISTING'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">RENCANA</th>\
+                        <td>' + (feature.properties['RENCANA'] !== null ? Autolinker.link(feature.properties['RENCANA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_RencanaPenggunaanLahan_1_0(feature) {
+            switch(String(feature.properties['RENCANA'])) {
+                case 'Hankam':
+                    return {
+                pane: 'pane_RencanaPenggunaanLahan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(230,76,255,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Hutan Rakyat':
+                    return {
+                pane: 'pane_RencanaPenggunaanLahan_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(153,255,153,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Industri':
+                    return {
+                pane: 'pane_RencanaPenggunaanLahan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(237,237,212,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Lapangan':
+                    return {
+                pane: 'pane_RencanaPenggunaanLahan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(222,113,67,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Makam':
+                    return {
+                pane: 'pane_RencanaPenggunaanLahan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(153,255,50,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Pariwisata':
+                    return {
+                pane: 'pane_RencanaPenggunaanLahan_1',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,230,255,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Perdagangan dan Jasa':
+                    return {
+                pane: 'pane_RencanaPenggunaanLahan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,26,1,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Perikanan':
+                    return {
+                pane: 'pane_RencanaPenggunaanLahan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Permukiman':
+                    return {
+                pane: 'pane_RencanaPenggunaanLahan_1',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,217,0,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Pertanian Swasembada Pangan':
+                    return {
+                pane: 'pane_RencanaPenggunaanLahan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(242,247,247,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Pertanian Tanaman Campuran':
+                    return {
+                pane: 'pane_RencanaPenggunaanLahan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(123,255,172,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Pertanian Tanaman Semusim':
+                    return {
+                pane: 'pane_RencanaPenggunaanLahan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(230,255,230,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Peternakan':
+                    return {
+                pane: 'pane_RencanaPenggunaanLahan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(242,255,242,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Sempadan Mata Air':
+                    return {
+                pane: 'pane_RencanaPenggunaanLahan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(168,255,191,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Sempadan Sungai':
+                    return {
+                pane: 'pane_RencanaPenggunaanLahan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(153,255,204,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_RencanaPenggunaanLahan_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(139,205,122,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_RencanaPenggunaanLahan_1');
+        map.getPane('pane_RencanaPenggunaanLahan_1').style.zIndex = 401;
+        map.getPane('pane_RencanaPenggunaanLahan_1').style['mix-blend-mode'] = 'normal';
+        var layer_RencanaPenggunaanLahan_1 = new L.geoJson(json_RencanaPenggunaanLahan_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_RencanaPenggunaanLahan_1',
+            layerName: 'layer_RencanaPenggunaanLahan_1',
+            pane: 'pane_RencanaPenggunaanLahan_1',
+            onEachFeature: pop_RencanaPenggunaanLahan_1,
+            style: style_RencanaPenggunaanLahan_1_0,
+        });
+        bounds_group.addLayer(layer_RencanaPenggunaanLahan_1);
+        map.addLayer(layer_RencanaPenggunaanLahan_1);
+        function pop_BatasDesa_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DESA'] !== null ? Autolinker.link(feature.properties['DESA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['LevelKpdtn'] !== null ? Autolinker.link(feature.properties['LevelKpdtn'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Kepadatanp'] !== null ? Autolinker.link(feature.properties['Kepadatanp'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['MigrasiNet'] !== null ? Autolinker.link(feature.properties['MigrasiNet'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['iseng'] !== null ? Autolinker.link(feature.properties['iseng'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Potensi'] !== null ? Autolinker.link(feature.properties['Potensi'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Urban/Non'] !== null ? Autolinker.link(feature.properties['Urban/Non'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Spsialissi'] !== null ? Autolinker.link(feature.properties['Spsialissi'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DayaTampun'] !== null ? Autolinker.link(feature.properties['DayaTampun'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DayaDkgTni'] !== null ? Autolinker.link(feature.properties['DayaDkgTni'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_BatasDesa_2_0() {
+            return {
+                pane: 'pane_BatasDesa_2',
+                opacity: 1,
+                color: 'rgba(123,123,123,1.0)',
+                dashArray: '10,5,1,5',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,0.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_BatasDesa_2');
+        map.getPane('pane_BatasDesa_2').style.zIndex = 402;
+        map.getPane('pane_BatasDesa_2').style['mix-blend-mode'] = 'normal';
+        var layer_BatasDesa_2 = new L.geoJson(json_BatasDesa_2, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_BatasDesa_2',
+            layerName: 'layer_BatasDesa_2',
+            pane: 'pane_BatasDesa_2',
+            onEachFeature: pop_BatasDesa_2,
+            style: style_BatasDesa_2_0,
+        });
+        bounds_group.addLayer(layer_BatasDesa_2);
+        map.addLayer(layer_BatasDesa_2);
+        function pop_WilayahStudi_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OBJECTID_1'] !== null ? Autolinker.link(feature.properties['OBJECTID_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OBJECTID'] !== null ? Autolinker.link(feature.properties['OBJECTID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KW'] !== null ? Autolinker.link(feature.properties['KW'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['WA'] !== null ? Autolinker.link(feature.properties['WA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['TA'] !== null ? Autolinker.link(feature.properties['TA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DH'] !== null ? Autolinker.link(feature.properties['DH'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['WI'] !== null ? Autolinker.link(feature.properties['WI'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['LSH'] !== null ? Autolinker.link(feature.properties['LSH'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['LU'] !== null ? Autolinker.link(feature.properties['LU'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KET'] !== null ? Autolinker.link(feature.properties['KET'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Shape_Leng'] !== null ? Autolinker.link(feature.properties['Shape_Leng'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Shape_Le_1'] !== null ? Autolinker.link(feature.properties['Shape_Le_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Shape_Area'] !== null ? Autolinker.link(feature.properties['Shape_Area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Kecamatan_'] !== null ? Autolinker.link(feature.properties['Kecamatan_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Luas_KM'] !== null ? Autolinker.link(feature.properties['Luas_KM'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_WilayahStudi_3_0() {
+            return {
+                pane: 'pane_WilayahStudi_3',
+                opacity: 1,
+                color: 'rgba(255,22,1,1.0)',
+                dashArray: '10,5,1,5',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 3.0, 
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_WilayahStudi_3');
+        map.getPane('pane_WilayahStudi_3').style.zIndex = 403;
+        map.getPane('pane_WilayahStudi_3').style['mix-blend-mode'] = 'normal';
+        var layer_WilayahStudi_3 = new L.geoJson(json_WilayahStudi_3, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_WilayahStudi_3',
+            layerName: 'layer_WilayahStudi_3',
+            pane: 'pane_WilayahStudi_3',
+            onEachFeature: pop_WilayahStudi_3,
+            style: style_WilayahStudi_3_0,
+        });
+        bounds_group.addLayer(layer_WilayahStudi_3);
+        map.addLayer(layer_WilayahStudi_3);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        setBounds();
+        var i = 0;
+        layer_BatasDesa_2.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['DESA'] !== null?String('<div style="color: #000000; font-size: 8pt; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['DESA']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_BatasDesa_2'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        resetLabels([layer_BatasDesa_2]);
+        map.on("zoomend", function(){
+            resetLabels([layer_BatasDesa_2]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_BatasDesa_2]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_BatasDesa_2]);
+        });
+        </script>
+    </body>
+</html>
